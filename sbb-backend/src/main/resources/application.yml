@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:h2:file:${db.location}
+  sql:
+    init:
+      mode: always

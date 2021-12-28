@@ -1,0 +1,1 @@
+insert into INVOICE (ID, CLIENT, FROM_DATE, TO_DATE, AMOUNT, TAX, NOTES) values ('001', 'Acme', '2021-11-01', '2021-11-30', 6000, 300, 'lorem ipsum');

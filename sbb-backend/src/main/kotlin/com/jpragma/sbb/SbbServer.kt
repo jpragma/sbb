@@ -1,28 +1,35 @@
 package com.jpragma.sbb
 
+import com.jpragma.sbb.domain.Invoice
+import com.jpragma.sbb.repo.InvoiceRepository
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @SpringBootApplication
 class SbbServer
 
 fun main(args: Array<String>) {
-	runApplication<SbbServer>(*args)
+    runApplication<SbbServer>(*args)
 }
 
 @RestController
-class TestController {
+class InvoicesController(
+    private val invoiceRepository: InvoiceRepository
+) {
 
-	@GetMapping("/invoice")
-	fun getSampleInvoice():Invoice {
-		val inv = Invoice("Procom", 10000.0)
-		return inv
-	}
+    @GetMapping("/invoices")
+    fun getInvoices(): Iterable<Invoice> {
+        return invoiceRepository.findAll()
+    }
+
+    @PostMapping("/invoices")
+    fun saveInvoice(@RequestBody invoice: Invoice): Invoice {
+        return invoiceRepository.save(invoice)
+    }
+
 }
 
-data class Invoice(
-	val client: String,
-	val amount: Double
-)
