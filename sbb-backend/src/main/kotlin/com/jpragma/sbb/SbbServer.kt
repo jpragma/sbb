@@ -4,6 +4,7 @@ import com.jpragma.sbb.domain.Invoice
 import com.jpragma.sbb.repo.InvoiceRepository
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -27,8 +28,14 @@ class InvoicesController(
     }
 
     @PostMapping("/invoices")
-    fun saveInvoice(@RequestBody invoice: Invoice): Invoice {
-        return invoiceRepository.save(invoice)
+    fun saveInvoice(@RequestBody invoice: Invoice): ResponseEntity<Any> {
+        val violations = invoice.validate()
+        if (violations.isValid) {
+            val saved = invoiceRepository.save(invoice)
+            return ResponseEntity.ok<Any>(saved)
+        } else {
+            return ResponseEntity.badRequest().body<Any>(violations.details())
+        }
     }
 
 }

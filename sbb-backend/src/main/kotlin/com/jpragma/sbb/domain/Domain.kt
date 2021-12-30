@@ -1,5 +1,6 @@
 package com.jpragma.sbb.domain
 
+import am.ik.yavi.builder.validator
 import java.time.LocalDate
 
 @JvmInline
@@ -19,5 +20,17 @@ data class Invoice (
 	val amount: Money,
 	val tax: Money,
 	val notes: String? = null
-)
+) {
+	companion object {
+		val validator = validator<Invoice> {
+			Invoice::id {
+				notBlank()
+			}
+			Invoice::client {
+				notBlank()
+			}
+		}
+	}
+	fun validate() = validator.validate(this)
+}
 
