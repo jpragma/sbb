@@ -1,10 +1,11 @@
 package com.jpragma.sbb.domain
 
-import am.ik.yavi.builder.validator
+import com.jpragma.sbb.validation.DateIntervalConstraint
 import java.time.LocalDate
+import javax.validation.constraints.Min
+import javax.validation.constraints.NotEmpty
 
-@JvmInline
-value class Money(val value:Double)
+typealias Money = Double
 
 data class DateInterval(val from:LocalDate, val to:LocalDate) {
 	companion object {
@@ -14,23 +15,15 @@ data class DateInterval(val from:LocalDate, val to:LocalDate) {
 
 
 data class Invoice (
+	@field:NotEmpty
 	val id: String,
+	@field:NotEmpty
 	val client: String,
+	@field:DateIntervalConstraint
 	val interval:DateInterval,
+	@field:Min(1)
 	val amount: Money,
+	@field:Min(1)
 	val tax: Money,
 	val notes: String? = null
-) {
-	companion object {
-		val validator = validator<Invoice> {
-			Invoice::id {
-				notBlank()
-			}
-			Invoice::client {
-				notBlank()
-			}
-		}
-	}
-	fun validate() = validator.validate(this)
-}
-
+)

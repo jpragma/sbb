@@ -2,7 +2,6 @@ package com.jpragma.sbb.repo
 
 import com.jpragma.sbb.domain.DateInterval
 import com.jpragma.sbb.domain.Invoice
-import com.jpragma.sbb.domain.Money
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -32,8 +31,8 @@ class RepositoryTests {
             "001",
             "Acme",
             DateInterval.of("2021-11-01", "2021-11-30"),
-            Money(6000.0),
-            Money(300.0),
+            6000.0,
+            300.0,
             "lorem ipsum"
         ))
     }
@@ -41,7 +40,7 @@ class RepositoryTests {
     @Test
     internal fun invoicePersistence() {
         expectThat(repo.findAll()).isEmpty()
-        val invoice = Invoice("001", "Acme", DateInterval(LocalDate.now(), LocalDate.now()), Money(100.0), Money(10.0), "Lorem")
+        val invoice = Invoice("001", "Acme", DateInterval(LocalDate.now(), LocalDate.now()), 100.0, 10.0, "Lorem")
         repo.save(invoice)
         expectThat(repo.findAll()).containsExactly(invoice)
     }
