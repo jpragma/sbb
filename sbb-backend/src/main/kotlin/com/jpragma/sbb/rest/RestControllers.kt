@@ -13,12 +13,12 @@ class InvoicesController(
     private val invoiceRepository: InvoiceRepository
 ) {
 
-    @GetMapping("/invoices")
+    @GetMapping("/api/invoices")
     fun getInvoices(): Iterable<Invoice> {
         return invoiceRepository.findAll()
     }
 
-    @PostMapping("/invoices")
+    @PostMapping("/api/invoices")
     fun saveInvoice(@RequestBody @Valid invoice: Invoice): Invoice {
         return invoiceRepository.save(invoice)
     }

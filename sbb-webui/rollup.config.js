@@ -6,6 +6,7 @@ import { terser } from 'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-css-only';
+import localdev from 'rollup-plugin-dev';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -65,9 +66,22 @@ export default {
 			inlineSources: !production
 		}),
 
+		// in dev mode, use a proxy service to avoid
+		// CORS errors with local lambda invocations
+		// https://github.com/nsimmons/koa-better-http-proxy#proxyreqpathresolver-supports-promises
+		!production && localdev({
+			dirs: ['public'],
+			host: 'localhost',
+			port: 8080,
+			proxy: [{
+				from: '/api',
+				to: 'http://localhost:8888/api'
+			}]
+		}),
+
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
-		!production && serve(),
+		// !production && serve(),
 
 		// Watch the `public` directory and refresh the
 		// browser on changes when not in production

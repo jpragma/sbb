@@ -1,6 +1,6 @@
 <script>
     let invoices = []
-    fetch('http://localhost:8888/invoices')
+    fetch('/api/invoices')
         .then((response) => response.json())
         .then((data) => invoices = data)
 </script>
